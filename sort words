@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <ctype.h>
+#include <stddef.h>
+
+
+//swap
+void swap(char *a, char *b){
+
+    char temp[64];
+    strcpy(temp,a);
+    strcpy(a,b);
+    strcpy(b,temp);
+
+}
+//case insensitive string comparison
+int compare_string(const char *a, const char *b){
+
+    char x, y;
+    for(int i=0; i< strlen(a);i++){
+        x = tolower (a[i]);
+        y = tolower (b[i]);
+        if(x != y){
+            break;
+        }
+    }
+
+    return x-y;
+}
+
+
+
+int main()
+{
+
+    char word[64];
+    bool run=1;
+    int size = 2;
+    char **dynarray = malloc(sizeof(char*) * size);
+    int len=0;
+    bool sorted;
+
+
+
+    while(run){
+        scanf("%63s", &word);
+        if(strcmp(word,".")!=0){
+            dynarray[len] =  (char*) malloc(sizeof(char) * 64);
+            dynarray[len++]=strdup(word);
+
+            if(len >= size) {
+                size = 2 * size; // double its size
+                dynarray = realloc(dynarray, sizeof(char*) * size);
+            }
+
+        }
+        else
+            run=0;
+    }
+
+    //bubble sort
+    do{
+        sorted=1;
+            for(int i=0;i<len-1;i++){
+                if(compare_string(dynarray[i],dynarray[i+1])>0){
+                    swap(dynarray[i],dynarray[i+1]);
+                    sorted=0;
+                }
+            }
+
+    }while(!sorted);
+
+
+    //print sorted array
+    for(int i=0;i<len;i++)
+        printf("%s\n",dynarray[i]);
+
+    return 0;
+}
+
